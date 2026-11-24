@@ -1,3 +1,11 @@
+# PSYCH//OS — source materializer.
+# Upload psych0-source.zip to the repo ROOT (Add file → Upload files → drag →
+# commit). This workflow detects it, unpacks the full project over the repo
+# root, deletes the zip, and commits everything as one commit.
+# Without a zip present the workflow is a no-op, so it can stay in the repo.
+# NOTE: .github is stripped from the upload before committing — GITHUB_TOKEN
+# is a GitHub App and may not create/update workflow files; the repo's own
+# copy of this workflow is left untouched so re-materializing keeps working.
 name: Materialize PSYCH0 source
 
 on:
@@ -47,6 +55,10 @@ jobs:
           fi
           test -f package.json || { echo "::error::zip has no package.json at its root"; exit 1; }
           test -d src       || { echo "::error::zip has no src/ directory"; exit 1; }
+
+          # a GitHub App cannot push workflow files — drop .github from the
+          # upload; the repo's own workflow (this file) stays untouched
+          rm -rf .github
 
           # overlay the whole tree (incl. dotfiles) onto the repo root
           cp -a /tmp/materialize/. "$GITHUB_WORKSPACE/"
