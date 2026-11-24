@@ -1,0 +1,18 @@
+# keep the deployment source to the Next.js app only
+# (anchored — bare `upload/` also excludes src/app/api/upload!)
+.next/
+.vercel/
+core
+skills/
+download/
+/upload/
+scripts/
+/db/
+examples/
+mini-services/
+.zscripts/
+.git/
+dev.log
+server.log
+.env.local
+README-deploy-notes.md
